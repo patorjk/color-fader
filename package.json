@@ -1,0 +1,45 @@
+{
+  "name": "color-fader",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "main": "./dist/color-fader.es.js",
+  "module": "./dist/color-fader.es.js",
+  "types": "./dist/types/color-fader.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "test": "vitest run",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patorjk/color-fader.git"
+  },
+  "keywords": [
+    "color",
+    "fader",
+    "phader"
+  ],
+  "author": "Patrick Gillespie (patorjk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/patorjk/color-fader/issues"
+  },
+  "homepage": "https://github.com/patorjk/color-fader#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^24.5.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "rollup-plugin-dts": "^6.2.3",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4"
+  }
+}
