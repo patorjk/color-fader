@@ -3,6 +3,8 @@
 A simple library for fading colors together. Example:
 
 ```ts
+import {fadeColors} from 'color-fader';
+
 const colors = ['#ff0000', '#0f0', '#0000ff'];
 const output = fadeColors(colors, 9);
 ```

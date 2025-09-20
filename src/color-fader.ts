@@ -1,131 +1,76 @@
-/*
-    Module to encapsulate fading
-    By Patrick Gillespie (patorjk)
-    Originally made for http://patorjk.com/text-color-fader
-*/
+import {cssColorToRgba, type RGBAColor} from './color-parser';
 
-export interface sRGBColor {
-  r: number,
-  g: number,
-  b: number
-}
-
-export type Colors = sRGBColor[] | string[];
-
-export interface FadeOptions {
-  returnType?: string,
-  numSign?: boolean
-}
-
-const hexToDec = (hex: string) => parseInt(hex, 16);
-
-const decToHex = (dec: number) => {
-  let hex = Math.round(dec).toString(16);
-  hex = (hex.length < 2) ? '0' + hex : hex;
-  return hex;
-};
-
-const twoColorFade = function (color1: sRGBColor, color2: sRGBColor, numPoints: number) {
-  let rIncr = (color2.r - color1.r) / (numPoints - 1),
-    gIncr = (color2.g - color1.g) / (numPoints - 1),
-    bIncr = (color2.b - color1.b) / (numPoints - 1),
-    colors = [],
-    r = color1.r,
-    g = color1.g,
-    b = color1.b,
-    ii;
-
-  for (ii = 0; ii < numPoints; ii++) {
-    colors.push({r: Math.abs(Math.round(r)), b: Math.abs(Math.round(b)), g: Math.abs(Math.round(g))});
-    r = r + rIncr;
-    g = g + gIncr;
-    b = b + bIncr;
-  }
-
-  return colors;
-};
-
-const multiColorFade = function (colors: sRGBColor[], numPoints: number) {
-  const colorIncr = (numPoints - 1) / (colors.length - 1);
-  let ii: number,
-    startPos = 0,
-    endPos = 1,
-    retColors: sRGBColor[] = [],
-    tmpColors: sRGBColor[],
-    dist;
-
-  for (ii = 0; ii < Math.min(colors.length - 1, numPoints); ii++) {
-    endPos = Math.max(startPos + 2, endPos + colorIncr);
-    dist = Math.round(endPos) - Math.round(startPos);
-
-    const currentColor = colors[ii];
-    const nextColor = colors[ii + 1];
-
-    if (!currentColor || !nextColor) {
-      break; // Safety check
-    }
-
-    tmpColors = twoColorFade(currentColor, nextColor, dist);
-    retColors.pop(); // remove last color
-    retColors = retColors.concat(tmpColors);
-
-    startPos = Math.round(endPos) - 1;
-  }
-  return retColors;
-};
+export type {RGBAColor};
+export type Color = RGBAColor | string;
 
 /**
  * Creates an array representing values in a color gradient between a given number of colors
  *
  * @param colors List of colors
- * @param numPoints Number of output points in the color gradient
- * @param options Some additional options
+ * @param outputSize Number of output points in the color gradient
  */
-export const fadeColors = (colors: Colors, numPoints: number, options: FadeOptions = {}): Colors => {
-  const processedColors: sRGBColor[] = [];
+export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => {
+  const processedColors: RGBAColor[] = colors.map(color => {
+    return (typeof color === 'string') ? cssColorToRgba(color) : color;
+  });
 
-  // convert hex colors to objects r,g,b properties
-  for (let ii = 0; ii < colors.length; ii++) {
-    let color = colors[ii];
-    if (typeof color === 'string') {
-      if (color.slice(0, 1) === '#') {
-        color = color.slice(1);
-      }
+  if (processedColors.length === 0) {
+    throw new Error('Colors array cannot be empty');
+  }
 
-      // if using 3 char string, convert to 6 char strings
-      if (color.length === 3) {
-        color = color.slice(0, 1) + color.slice(0, 1) + color.slice(1, 2) + color.slice(1, 2) + color.slice(2, 3) + color.slice(2, 3);
-      }
+  if (outputSize <= 0) {
+    throw new Error('Output size must be greater than 0');
+  }
 
-      let r = hexToDec(color.substring(0, 2));
-      let g = hexToDec(color.substring(2, 4));
-      let b = hexToDec(color.substring(4, 6));
-      processedColors.push({r: r, g: g, b: b});
+  if (outputSize === 1) {
+    if (processedColors[0]) {
+      return [{r: processedColors[0].r, g: processedColors[0].g, b: processedColors[0].b, a: processedColors[0].a}];
     } else {
-      if (color) {
-        processedColors.push(color);
-      }
+      throw new Error('Colors array cannot be empty');
     }
   }
 
-  // fade
-  const outputColors = multiColorFade(processedColors, numPoints);
-  const hexOutputColors: string[] = [];
-
-
-  // convert colors to hex if desired
-  if (options.returnType === 'hex') {
-    const numSign = !options.numSign ? '' : '#'; // default to true
-    for (let ii = 0; ii < outputColors.length; ii++) {
-      let color = outputColors[ii];
-      if (color) {
-        hexOutputColors.push(numSign + decToHex(color.r) + decToHex(color.g) + decToHex(color.b));
-      }
+  if (processedColors.length === 1) {
+    const color = processedColors[0];
+    if (typeof color !== 'undefined') {
+      return Array(outputSize).fill(null).map(() => ({r: color.r, g: color.g, b: color.b, a: color.a}));
+    } else {
+      throw new Error('Colors array cannot be empty');
     }
-    return hexOutputColors;
   }
 
-  return outputColors;
-};
+  const result: RGBAColor[] = [];
 
+  // Calculate how many steps between each pair of colors
+  const totalSegments = processedColors.length - 1;
+  const stepsPerSegment = (outputSize - 1) / totalSegments;
 
+  for (let i = 0; i < outputSize; i++) {
+    // Find which segment we're in
+    const segmentIndex = Math.min(
+      Math.floor(i / stepsPerSegment),
+      totalSegments - 1
+    );
+
+    // Find the position within the current segment (0 to 1)
+    const segmentProgress = (i / stepsPerSegment) - segmentIndex;
+    const t = Math.min(segmentProgress, 1);
+
+    const startColor = processedColors[segmentIndex];
+    const endColor = processedColors[segmentIndex + 1];
+
+    if (startColor && endColor) {
+      // Linear interpolation between the two colors
+      const interpolatedColor: RGBAColor = {
+        r: Math.round(startColor.r + (endColor.r - startColor.r) * t),
+        g: Math.round(startColor.g + (endColor.g - startColor.g) * t),
+        b: Math.round(startColor.b + (endColor.b - startColor.b) * t),
+        a: startColor.a + (endColor.a - startColor.a) * t
+      };
+
+      result.push(interpolatedColor);
+    }
+  }
+
+  return result;
+}
