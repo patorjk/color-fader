@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest';
-import {fadeColors, type RGBAColor, type Color, getCSSHexColor} from '../src/color-fader';
+import {fadeColors, type RgbaColor, type Color, getCssHexColor} from '../src/color-fader';
 
 describe('fadeColors', () => {
   describe('Basic functionality', () => {
@@ -324,119 +324,119 @@ describe('fadeColors', () => {
 describe('getCSSHexColor', () => {
   describe('basic color conversion', () => {
     it('should convert pure red with full opacity', () => {
-      const color: RGBAColor = {r: 255, g: 0, b: 0, a: 1};
-      expect(getCSSHexColor(color)).toBe('#ff0000');
+      const color: RgbaColor = {r: 255, g: 0, b: 0, a: 1};
+      expect(getCssHexColor(color)).toBe('#ff0000');
     });
 
     it('should convert pure green with full opacity', () => {
-      const color: RGBAColor = {r: 0, g: 255, b: 0, a: 1};
-      expect(getCSSHexColor(color)).toBe('#00ff00');
+      const color: RgbaColor = {r: 0, g: 255, b: 0, a: 1};
+      expect(getCssHexColor(color)).toBe('#00ff00');
     });
 
     it('should convert pure blue with full opacity', () => {
-      const color: RGBAColor = {r: 0, g: 0, b: 255, a: 1};
-      expect(getCSSHexColor(color)).toBe('#0000ff');
+      const color: RgbaColor = {r: 0, g: 0, b: 255, a: 1};
+      expect(getCssHexColor(color)).toBe('#0000ff');
     });
 
     it('should convert white with full opacity', () => {
-      const color: RGBAColor = {r: 255, g: 255, b: 255, a: 1};
-      expect(getCSSHexColor(color)).toBe('#ffffff');
+      const color: RgbaColor = {r: 255, g: 255, b: 255, a: 1};
+      expect(getCssHexColor(color)).toBe('#ffffff');
     });
 
     it('should convert black with full opacity', () => {
-      const color: RGBAColor = {r: 0, g: 0, b: 0, a: 1};
-      expect(getCSSHexColor(color)).toBe('#000000');
+      const color: RgbaColor = {r: 0, g: 0, b: 0, a: 1};
+      expect(getCssHexColor(color)).toBe('#000000');
     });
   });
 
   describe('alpha channel handling', () => {
     it('should include alpha when less than 1', () => {
-      const color: RGBAColor = {r: 255, g: 0, b: 0, a: 0.5};
-      expect(getCSSHexColor(color)).toBe('#ff000080');
+      const color: RgbaColor = {r: 255, g: 0, b: 0, a: 0.5};
+      expect(getCssHexColor(color)).toBe('#ff000080');
     });
 
     it('should omit alpha when exactly 1', () => {
-      const color: RGBAColor = {r: 255, g: 0, b: 0, a: 1};
-      expect(getCSSHexColor(color)).toBe('#ff0000');
+      const color: RgbaColor = {r: 255, g: 0, b: 0, a: 1};
+      expect(getCssHexColor(color)).toBe('#ff0000');
     });
 
     it('should handle zero alpha', () => {
-      const color: RGBAColor = {r: 255, g: 255, b: 255, a: 0};
-      expect(getCSSHexColor(color)).toBe('#ffffff00');
+      const color: RgbaColor = {r: 255, g: 255, b: 255, a: 0};
+      expect(getCssHexColor(color)).toBe('#ffffff00');
     });
 
     it('should handle quarter alpha', () => {
-      const color: RGBAColor = {r: 128, g: 128, b: 128, a: 0.25};
-      expect(getCSSHexColor(color)).toBe('#80808040');
+      const color: RgbaColor = {r: 128, g: 128, b: 128, a: 0.25};
+      expect(getCssHexColor(color)).toBe('#80808040');
     });
 
     it('should handle three-quarter alpha', () => {
-      const color: RGBAColor = {r: 100, g: 150, b: 200, a: 0.75};
-      expect(getCSSHexColor(color)).toBe('#6496c8bf');
+      const color: RgbaColor = {r: 100, g: 150, b: 200, a: 0.75};
+      expect(getCssHexColor(color)).toBe('#6496c8bf');
     });
   });
 
   describe('hex formatting', () => {
     it('should pad single digit hex values with zero', () => {
-      const color: RGBAColor = {r: 1, g: 2, b: 3, a: 1};
-      expect(getCSSHexColor(color)).toBe('#010203');
+      const color: RgbaColor = {r: 1, g: 2, b: 3, a: 1};
+      expect(getCssHexColor(color)).toBe('#010203');
     });
 
     it('should handle mixed single and double digit values', () => {
-      const color: RGBAColor = {r: 15, g: 255, b: 5, a: 1};
-      expect(getCSSHexColor(color)).toBe('#0fff05');
+      const color: RgbaColor = {r: 15, g: 255, b: 5, a: 1};
+      expect(getCssHexColor(color)).toBe('#0fff05');
     });
 
     it('should pad alpha values correctly', () => {
-      const color: RGBAColor = {r: 255, g: 255, b: 255, a: 0.02}; // ~5 in hex
-      expect(getCSSHexColor(color)).toBe('#ffffff05');
+      const color: RgbaColor = {r: 255, g: 255, b: 255, a: 0.02}; // ~5 in hex
+      expect(getCssHexColor(color)).toBe('#ffffff05');
     });
   });
 
   describe('edge cases and validation', () => {
     it('should clamp RGB values above 255', () => {
-      const color: RGBAColor = {r: 300, g: 400, b: 500, a: 1};
-      expect(getCSSHexColor(color)).toBe('#ffffff');
+      const color: RgbaColor = {r: 300, g: 400, b: 500, a: 1};
+      expect(getCssHexColor(color)).toBe('#ffffff');
     });
 
     it('should clamp RGB values below 0', () => {
-      const color: RGBAColor = {r: -10, g: -20, b: -30, a: 1};
-      expect(getCSSHexColor(color)).toBe('#000000');
+      const color: RgbaColor = {r: -10, g: -20, b: -30, a: 1};
+      expect(getCssHexColor(color)).toBe('#000000');
     });
 
     it('should handle decimal RGB values by rounding', () => {
-      const color: RGBAColor = {r: 127.8, g: 64.2, b: 200.6, a: 1};
-      expect(getCSSHexColor(color)).toBe('#8040c9');
+      const color: RgbaColor = {r: 127.8, g: 64.2, b: 200.6, a: 1};
+      expect(getCssHexColor(color)).toBe('#8040c9');
     });
 
     it('should handle alpha values above 1', () => {
-      const color: RGBAColor = {r: 100, g: 100, b: 100, a: 1.5};
+      const color: RgbaColor = {r: 100, g: 100, b: 100, a: 1.5};
       // Alpha should be clamped to 255 (ff in hex)
-      expect(getCSSHexColor(color)).toBe('#646464ff');
+      expect(getCssHexColor(color)).toBe('#646464ff');
     });
 
     it('should handle negative alpha values', () => {
-      const color: RGBAColor = {r: 100, g: 100, b: 100, a: -0.5};
+      const color: RgbaColor = {r: 100, g: 100, b: 100, a: -0.5};
       // Alpha should be clamped to 0 (00 in hex)
-      expect(getCSSHexColor(color)).toBe('#64646400');
+      expect(getCssHexColor(color)).toBe('#64646400');
     });
   });
 
   describe('real-world color examples', () => {
     it('should convert common CSS colors correctly', () => {
       // Equivalent to CSS color "crimson" (#dc143c)
-      const crimson: RGBAColor = {r: 220, g: 20, b: 60, a: 1};
-      expect(getCSSHexColor(crimson)).toBe('#dc143c');
+      const crimson: RgbaColor = {r: 220, g: 20, b: 60, a: 1};
+      expect(getCssHexColor(crimson)).toBe('#dc143c');
 
       // Equivalent to CSS color "skyblue" (#87ceeb)
-      const skyblue: RGBAColor = {r: 135, g: 206, b: 235, a: 1};
-      expect(getCSSHexColor(skyblue)).toBe('#87ceeb');
+      const skyblue: RgbaColor = {r: 135, g: 206, b: 235, a: 1};
+      expect(getCssHexColor(skyblue)).toBe('#87ceeb');
     });
 
     it('should handle semi-transparent overlay colors', () => {
       // Common semi-transparent black overlay
-      const overlay: RGBAColor = {r: 0, g: 0, b: 0, a: 0.6};
-      expect(getCSSHexColor(overlay)).toBe('#00000099');
+      const overlay: RgbaColor = {r: 0, g: 0, b: 0, a: 0.6};
+      expect(getCssHexColor(overlay)).toBe('#00000099');
     });
   });
 });

@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest';
-import {cssColorToRgba, type RGBAColor} from '../src/color-parser';
+import {cssColorToRgba, type RgbaColor} from '../src/color-parser';
 
 describe('cssColorToRgba', () => {
   describe('Hex colors', () => {
@@ -209,7 +209,7 @@ describe('cssColorToRgba', () => {
 
   describe('Type checking', () => {
     it('should return correct RGBAColor interface', () => {
-      const result: RGBAColor = cssColorToRgba('#ff0000');
+      const result: RgbaColor = cssColorToRgba('#ff0000');
       expect(typeof result.r).toBe('number');
       expect(typeof result.g).toBe('number');
       expect(typeof result.b).toBe('number');

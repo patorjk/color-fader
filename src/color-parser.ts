@@ -1,4 +1,4 @@
-export interface RGBAColor {
+export interface RgbaColor {
   r: number;
   g: number;
   b: number;
@@ -162,7 +162,7 @@ const namedColors: { [key: string]: string } = {
  *
  * @param color CSS color string
  */
-export function cssColorToRgba(color: string): RGBAColor {
+export function cssColorToRgba(color: string): RgbaColor {
   const normalizedColor = color.trim().toLowerCase();
 
   if (normalizedColor.startsWith('#')) {
@@ -178,7 +178,7 @@ export function cssColorToRgba(color: string): RGBAColor {
   throw new Error(`Unsupported color format: ${color}`);
 }
 
-function parseHexColor(hex: string): RGBAColor {
+function parseHexColor(hex: string): RgbaColor {
   const cleanHex = hex.slice(1); // Remove the # symbol
 
   if (cleanHex.length < 3) throw new Error(`Invalid hex color format: ${hex}`);
@@ -213,7 +213,7 @@ function parseHexColor(hex: string): RGBAColor {
   return {r, g, b, a};
 }
 
-function parseRgbColor(rgb: string): RGBAColor {
+function parseRgbColor(rgb: string): RgbaColor {
   // Extract the content inside parentheses
   const match = rgb.match(/rgba?\(([^)]+)\)/);
   if (!match) {
@@ -242,7 +242,7 @@ function parseRgbColor(rgb: string): RGBAColor {
   return {r, g, b, a};
 }
 
-function parseHslColor(hsl: string): RGBAColor {
+function parseHslColor(hsl: string): RgbaColor {
   // Extract the content inside parentheses
   const match = hsl.match(/hsla?\(([^)]+)\)/);
   if (!match) {
@@ -316,7 +316,7 @@ function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: n
   };
 }
 
-function parseNamedColor(colorName: string): RGBAColor | null {
+function parseNamedColor(colorName: string): RgbaColor | null {
   if (namedColors[colorName]) {
     return parseHexColor(namedColors[colorName]);
   }

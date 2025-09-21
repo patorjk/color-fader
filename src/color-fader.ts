@@ -1,7 +1,7 @@
-import {cssColorToRgba, type RGBAColor} from './color-parser';
+import {cssColorToRgba, type RgbaColor} from './color-parser';
 
-export type {RGBAColor};
-export type Color = RGBAColor | string;
+export type {RgbaColor};
+export type Color = RgbaColor | string;
 
 /**
  * Creates an array representing values in a color gradient between a given number of colors
@@ -9,8 +9,8 @@ export type Color = RGBAColor | string;
  * @param colors List of colors
  * @param outputSize Number of output points in the color gradient
  */
-export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => {
-  const processedColors: RGBAColor[] = colors.map(color => {
+export const fadeColors = (colors: Color[], outputSize: number): RgbaColor[] => {
+  const processedColors: RgbaColor[] = colors.map(color => {
     return (typeof color === 'string') ? cssColorToRgba(color) : color;
   });
 
@@ -39,7 +39,7 @@ export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => 
     }
   }
 
-  const result: RGBAColor[] = [];
+  const result: RgbaColor[] = [];
 
   // Calculate how many steps between each pair of colors
   const totalSegments = processedColors.length - 1;
@@ -61,7 +61,7 @@ export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => 
 
     if (startColor && endColor) {
       // Linear interpolation between the two colors
-      const interpolatedColor: RGBAColor = {
+      const interpolatedColor: RgbaColor = {
         r: Math.round(startColor.r + (endColor.r - startColor.r) * t),
         g: Math.round(startColor.g + (endColor.g - startColor.g) * t),
         b: Math.round(startColor.b + (endColor.b - startColor.b) * t),
@@ -76,11 +76,11 @@ export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => 
 }
 
 /**
- * Converts a RGBAColor to a rgba CSS color string.
+ * Converts a RgbaColor to a rgba CSS color string.
  *
  * @param rgbColor
  */
-export function getCSSRGBAColor(rgbColor: RGBAColor) {
+export function getCssRgbaColor(rgbColor: RgbaColor) {
   return `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, ${rgbColor.a})`;
 }
 
@@ -95,11 +95,11 @@ const toHex = (value: number): string => {
 };
 
 /**
- * Converts a RGBAColor to a CSS hex string
+ * Converts a RgbaColor to a CSS hex string
  *
  * @param color
  */
-export function getCSSHexColor(color: RGBAColor): string {
+export function getCssHexColor(color: RgbaColor): string {
   const rHex = toHex(color.r);
   const gHex = toHex(color.g);
   const bHex = toHex(color.b);
