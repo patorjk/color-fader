@@ -1,10 +1,10 @@
 {
   "name": "color-fader",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
-  "main": "./dist/color-fader.es.js",
-  "module": "./dist/color-fader.es.js",
+  "main": "./dist/color-fader.js",
+  "module": "./dist/color-fader.js",
   "types": "./dist/types/color-fader.d.ts",
   "files": [
     "dist"

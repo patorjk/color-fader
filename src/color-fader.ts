@@ -74,3 +74,42 @@ export const fadeColors = (colors: Color[], outputSize: number): RGBAColor[] => 
 
   return result;
 }
+
+/**
+ * Converts a RGBAColor to a rgba CSS color string.
+ *
+ * @param rgbColor
+ */
+export function getCSSRGBAColor(rgbColor: RGBAColor) {
+  return `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, ${rgbColor.a})`;
+}
+
+/**
+ * Converts a number to a 2-digit hex string.
+ *
+ * @param value 0-255 number, assumed to be a color value.
+ */
+const toHex = (value: number): string => {
+  const hex = Math.round(Math.max(0, Math.min(255, value))).toString(16);
+  return hex.length === 1 ? '0' + hex : hex;
+};
+
+/**
+ * Converts a RGBAColor to a CSS hex string
+ *
+ * @param color
+ */
+export function getCSSHexColor(color: RGBAColor): string {
+  const rHex = toHex(color.r);
+  const gHex = toHex(color.g);
+  const bHex = toHex(color.b);
+
+  // If alpha is 1, return RGB hex without alpha
+  if (color.a === 1) {
+    return `#${rHex}${gHex}${bHex}`;
+  }
+
+  // Convert alpha (0-1) to hex (00-FF)
+  const aHex = toHex(color.a * 255);
+  return `#${rHex}${gHex}${bHex}${aHex}`;
+}
