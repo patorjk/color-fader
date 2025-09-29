@@ -5,6 +5,13 @@ export interface RgbaColor {
   a: number;
 }
 
+export interface HslaColor {
+  h: number;
+  s: number;
+  l: number;
+  a: number;
+}
+
 const namedColors: { [key: string]: string } = {
   'transparent': '#00000000',
   "aliceblue": "#f0f8ff",
@@ -324,3 +331,42 @@ function parseNamedColor(colorName: string): RgbaColor | null {
   return null;
 }
 
+export function rgbaToHsla(rgb: RgbaColor): HslaColor {
+  // Normalize RGB values to 0-1 range
+  const r = rgb.r / 255;
+  const g = rgb.g / 255;
+  const b = rgb.b / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (delta !== 0) {
+    // Calculate saturation
+    s = l > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+
+    // Calculate hue
+    switch (max) {
+      case r:
+        h = ((g - b) / delta + (g < b ? 6 : 0)) / 6;
+        break;
+      case g:
+        h = ((b - r) / delta + 2) / 6;
+        break;
+      case b:
+        h = ((r - g) / delta + 4) / 6;
+        break;
+    }
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+    a: rgb.a
+  };
+}

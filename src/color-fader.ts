@@ -1,7 +1,11 @@
-import {cssColorToRgba, type RgbaColor} from './color-parser';
+import {cssColorToRgba, rgbaToHsla, type RgbaColor, type HslaColor} from './color-parser';
 
 export type {RgbaColor};
 export type Color = RgbaColor | string;
+export type {HslaColor}
+
+export {cssColorToRgba}
+export {rgbaToHsla}
 
 /**
  * Creates an array representing values in a color gradient between a given number of colors

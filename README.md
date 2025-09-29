@@ -42,3 +42,11 @@ Simple function to convert an RGBAColor object to a CSS hex string.
 // "#ff0000"
 const css: string = getCssHexColor({r: 255, b: 0, g: 0, a: 1});
 ```
+
+## cssColorToRgba
+
+Takes in a CSS color and returns an RGBAColor.
+
+```ts
+const color: RgbaColor = cssColorToRgba('red');
+```
